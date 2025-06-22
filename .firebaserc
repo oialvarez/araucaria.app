@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "araucaria-app"
-  }
+    "default": "araucaria-app",
+    "development": "araucaria-app"
+  },
+  "targets": {}
 }
