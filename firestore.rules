@@ -1,8 +1,108 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+    // Reglas para la colección colegios
+    match /colegios/{colegioId} {
+      // Solo administradores del colegio pueden acceder
+      allow read, write: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'administrador' &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.colegioId == colegioId;
+    }
+
+    // Reglas para la colección users
+    match /users/{userId} {
+      // Solo el usuario puede leer su propio documento
+      allow read: if request.auth != null && request.auth.uid == userId;
+      // Solo el usuario puede actualizar su propio documento
+      allow update: if request.auth != null && request.auth.uid == userId;
+      // Nada más se permite
+      allow create, delete: if false;
+    }
+
+    // Reglas para la colección cursos
+    match /cursos/{cursoId} {
+      // Solo administradores del colegio pueden acceder
+      allow read, write: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'administrador' &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.colegioId == resource.data.colegioId;
+    }
+
+    // Reglas para la colección alumnos
+    match /alumnos/{alumnoId} {
+      // Solo administradores del colegio pueden acceder
+      allow read, write: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'administrador' &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.colegioId == resource.data.colegioId;
+    }
+
+    // Reglas para la colección materias
+          (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.colegioId == resource.data.colegioId ||
+           exists(/databases/$(database)/documents/materias/{materiaId}) &&
+           get(/databases/$(database)/documents/materias/{materiaId}).data.profesorId == request.auth.uid);
+
+        // Nada más se permite
+        allow update, delete: if false;
+      }
+    }
+
+    // Reglas para avisos
+    match /avisos/{avisoId} {
+      // Solo profesores y administradores pueden crear avisos
+      allow create: if request.auth != null &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol in ['profesor', 'administrador'];
+
+      // Reglas para leer avisos
+      allow read: if request.auth != null &&
+        (
+          // Administradores pueden leer todos los avisos
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'administrador' ||
+          // Profesores pueden leer todos los avisos
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'profesor' ||
+          // Apoderados pueden leer avisos de sus cursos
+          (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'apoderado' &&
+           exists(/databases/$(database)/documents/alumnos/{alumnoId}) &&
+           get(/databases/$(database)/documents/alumnos/{alumnoId}).data.apoderadoId == request.auth.uid &&
+           (
+             // Avisos globales (sin cursos especificados) o avisos que incluyen el curso del alumno
+             (resource.data.cursos == null ||
+              resource.data.cursos.size() == 0 ||
+              resource.data.cursos in get(/databases/$(database)/documents/alumnos/{alumnoId}).data.cursoId)
+           ))
+        );
+
+      // Reglas para actualizar y eliminar avisos
+      allow update, delete: if request.auth != null &&
+        (
+          // Administradores pueden actualizar/eliminar cualquier aviso
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'administrador' ||
+          // El creador del aviso puede actualizar/eliminar su propio aviso
+          (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol in ['profesor', 'administrador'] &&
+           (request.auth.uid == resource.data.profesorId ||
+            request.auth.uid == resource.data.administradorId))
+        );
+
+      // Reglas para confirmaciones de avisos
+      match /confirmaciones/{confirmacionId} {
+        // Apoderados pueden crear confirmaciones para avisos que les corresponden
+        allow create: if request.auth != null &&
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'apoderado' &&
+          exists(/databases/$(database)/documents/alumnos/{alumnoId}) &&
+          get(/databases/$(database)/documents/alumnos/{alumnoId}).data.apoderadoId == request.auth.uid &&
+          (
+            // Avisos globales (sin cursos especificados) o avisos que incluyen el curso del alumno
+            (resource.parent.parent.data.cursos == null ||
+             resource.parent.parent.data.cursos.size() == 0 ||
+             resource.parent.parent.data.cursos in get(/databases/$(database)/documents/alumnos/{alumnoId}).data.cursoId)
+          );
+
+        // Profesores y administradores pueden leer confirmaciones
+        allow read: if request.auth != null &&
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol in ['profesor', 'administrador'] &&
+          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.colegioId == resource.parent.parent.data.colegioId;
+
+        // Nada más se permite
+        allow update, delete: if false;
+      }
     }
   }
 }

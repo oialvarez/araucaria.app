@@ -1,8 +1,37 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if request.auth!=null;
+    // Reglas para archivos de colegios
+    match /{colegioId}/{type}/{id}/{fileName} {
+      // Solo profesores y administradores pueden subir archivos
+      allow write: if request.auth != null &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'profesor' ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol == 'administrador') &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.colegioId == colegioId;
+
+      // Todos los usuarios autorizados pueden leer los archivos
+      allow read: if request.auth != null &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.rol in ['profesor', 'administrador', 'apoderado'] &&
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.colegioId == colegioId);
+
+      // Validación de tipos permitidos
+      allow write: if request.resource.contentType.matches('application/pdf') ||
+        request.resource.contentType.matches('image/jpeg') ||
+        request.resource.contentType.matches('image/png') ||
+        request.resource.contentType.matches('application/msword') ||
+        request.resource.contentType.matches('application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+
+      // Validación de tamaño máximo (10MB)
+      allow write: if request.resource.size < 10 * 1024 * 1024;
+
+      // Validación de nombre de archivo
+      allow write: if fileName.matches('^.*\.(pdf|jpg|jpeg|png|doc|docx)$');
+
+      // Validación de tipos permitidos
+      allow read: if type in ['avisos', 'pendientes'];
+
+      // Validación de estructura de URL
+      allow write: if id.matches('[a-zA-Z0-9-_]+');
     }
   }
 }
