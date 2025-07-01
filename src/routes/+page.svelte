@@ -1,103 +1,66 @@
-<script>
-  let email = '';
-  let subscribed = false;
+<script lang="ts">
+  import { auth } from '$lib/firebase';
+  import { onAuthStateChanged, getAuth } from 'firebase/auth';
+  import { goto } from '$app/navigation';
+  import { page } from '$app/stores';
+
+  let user: any = null;
+  let email: string = '';
+  let subscribed: boolean = false;
+
+  // Redirigir a dashboard si hay sesión
+  onAuthStateChanged(auth, (user) => {
+    if (user && $page.url.pathname === '/') {
+      goto('/dashboard');
+    }
+  });
 
   async function handleSubmit() {
-    // Aquí iría el código para enviar el correo a tu base de datos
-    // o a un servicio de email marketing como Firebase Firestore o Mailchimp
-    // Por ahora, solo simulamos la suscripción exitosa.
+    // Aquí iría la lógica para enviar el email a una lista de espera
+    // Por ahora, solo mostramos el mensaje de éxito
     subscribed = true;
-    console.log('Correo suscrito:', email);
-    email = ''; // Limpiar el campo después de la suscripción
   }
 </script>
 
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100">
+  <div class="container mx-auto px-4 py-12">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        Bienvenido a Araucaria
+      </h1>
+      <p class="text-xl text-gray-600 mb-8">
+        Tu plataforma educativa para gestionar avisos y tareas
+      </p>
+      
+      <div class="flex flex-col md:flex-row gap-4 justify-center">
+        <a href="/login" class="px-8 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-colors">
+          Iniciar Sesión
+        </a>
+        <a href="/register" class="px-8 py-3 bg-white hover:bg-gray-50 text-blue-500 border border-blue-500 rounded-lg font-semibold transition-colors">
+          Registrarse
+        </a>
+      </div>
+
+      <div class="mt-12 text-gray-600 text-center">
+        <p class="mb-4">
+          <span class="font-semibold">Araucaria</span> es una plataforma diseñada especialmente para el contexto educativo,
+          permitiendo a profesores, apoderados y administradores gestionar avisos y tareas de manera eficiente.
+        </p>
+        <p>
+          ¿Eres apoderado? Mantente informado sobre los avisos de tus hijos y gestiona sus tareas.
+          ¿Eres profesor? Comunica avisos importantes y asigna tareas a tus estudiantes.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
 <style>
-  /* Estilos generales */
-  body {
-    font-family: sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f9f9f9;
-    color: #333;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    text-align: center; /* Centrar el contenido en pantallas pequeñas */
-  }
-
   .container {
-    width: 90%;
-    /* Eliminar el max-width para que ocupe más espacio en pantallas grandes */
-    /* max-width: 600px; */
-    max-width: 800px; /* Aumentar el ancho máximo */
-    padding: 2rem;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    text-align: left; /* Alinear el texto a la izquierda en pantallas más grandes */
-  }
-
-  /* Título */
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #2c3e50;
-    text-align: center; /* Centrar el título en todos los tamaños */
-  }
-
-  /* Descripción */
-  p {
-    font-size: 1rem;
-    margin-bottom: 2rem;
-    color: #555;
-  }
-
-  /* Formulario */
-  form {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: stretch; /* Estirar los elementos para ocupar todo el ancho */
-  }
-
-  input[type="email"] {
-    width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-
-  button {
-    padding: 0.75rem 1.5rem;
-    background-color: #3498db;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  button:hover {
-    background-color: #2980b9;
-  }
-
-  /* Mensaje de agradecimiento */
-  .success-message {
-    margin-top: 1rem;
-    color: #27ae60;
-  }
-
-  /* Enlace para compartir */
-  .share-link {
-    margin-top: 2rem;
-    font-size: 0.9rem;
-    color: #777;
-    text-align: center; /* Centrar el enlace en todos los tamaños */
+    justify-content: center;
   }
 
   .share-link a {
@@ -110,32 +73,24 @@
   }
 
   /* Media Queries para pantallas más grandes */
-  @media (min-width: 768px) { /* Cambiar el breakpoint a 768px para tablets */
+  @media (min-width: 768px) {
     h1 {
-      font-size: 3rem; /* Aumentar el tamaño del título en pantallas más grandes */
-    }
-
-    p {
-      font-size: 1.2rem; /* Aumentar el tamaño de la descripción en pantallas más grandes */
+      font-size: 3rem;
     }
 
     .container {
-      text-align: left; /* Alinear el texto a la izquierda en pantallas más grandes */
+      padding: 2rem;
+    }
+  }
+
+  /* Media Queries para pantallas grandes */
+  @media (min-width: 1024px) {
+    h1 {
+      font-size: 3.5rem;
     }
 
-    form {
-      flex-direction: row; /* Alinear los elementos del formulario en fila */
-      align-items: center; /* Centrar verticalmente */
-    }
-
-    input[type="email"] {
-      width: 60%; /* Reducir el ancho del campo de correo electrónico */
-      margin-right: 0.5rem;
-    }
-
-    button {
-      width: 40%; /* Ajustar el ancho del botón */
-      font-size: 1.2rem; /* Aumentar el tamaño del texto del botón */
+    .container {
+      padding: 3rem;
     }
   }
 </style>
@@ -157,6 +112,11 @@
   {/if}
 
   {#if subscribed}
-    <p class="share-link">¿Te sientes identificado? <a href="#">¡Comparte esta página con otros padres/madres que también necesitan un respiro!</a></p>
+    <p class="share-link">
+      ¿Te sientes identificado? 
+      <a href="https://twitter.com/intent/tweet?url=https://araucaria-app.com&text=¡Necesitas ayuda para no perderte nada importante del colegio de tus hijos? 📚✨ Araucaria App es la solución!" aria-label="Compartir en Twitter">
+        ¡Comparte esta página con otros padres/madres que también necesitan un respiro!
+      </a>
+    </p>
   {/if}
 </div>

@@ -1,7 +1,22 @@
-import tailwindcss from '@tailwindcss/vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 
 export default defineConfig({
-	plugins: [tailwindcss(), sveltekit()]
+	plugins: [sveltekit()],
+	css: {
+		postcss: {
+			plugins: [
+				tailwindcss,
+				autoprefixer
+			]
+		}
+	},
+	ssr: {
+		noExternal: ['firebase']
+	},
+	define: {
+		'process.env': process.env
+	}
 });

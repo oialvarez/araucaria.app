@@ -2,14 +2,13 @@
   import { onMount } from 'svelte';
   import { getFirestore, doc, updateDoc, collection, query, where, onSnapshot } from 'firebase/firestore';
   import { getAuth, onAuthStateChanged } from 'firebase/auth';
-  import { app } from '../../firebase';
+  import { db, auth } from '../../lib/firebase';
   import AddTarea from './AddTarea.svelte';
 
 
-  const db = getFirestore(app);
-  const auth = getAuth(app);
+  // Las instancias de db y auth ya están importadas
 
-  let tareas = [];
+  let tareas: any[] = []; // Considerar definir un tipo específico para las tareas más adelante
   let userUid: string | null = null;
 
   // Detectar usuario logueado

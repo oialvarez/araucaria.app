@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-  import { app } from '../../firebase';
+  import { signInWithEmailAndPassword } from 'firebase/auth';
+  import { auth } from '../../lib/firebase';
   import { goto } from '$app/navigation'; // si usas SvelteKit para navegar
-
-  const auth = getAuth(app);
 
   let email: string = '';
   let password: string = '';
@@ -23,16 +21,24 @@
 </script>
 
 <div class="container">
+  <nav class="nav-home">
+    <a href="/" class="home-link">Araucaria App</a>
+  </nav>
   <div class="form-box">
+    <h1 class="mt-8">Iniciar Sesión</h1>
     <h1>Iniciar Sesión</h1>
     <form on:submit|preventDefault={login}>
-      <label>Email:</label>
-      <input type="email" bind:value={email} required />
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input id="email" type="email" bind:value={email} required aria-label="Email" />
+      </div>
 
-      <label>Contraseña:</label>
-      <input type="password" bind:value={password} required />
+      <div class="form-group">
+        <label for="password">Contraseña:</label>
+        <input id="password" type="password" bind:value={password} required aria-label="Contraseña" />
+      </div>
 
-      <button type="submit">Entrar</button>
+      <button type="submit" class="btn-primary">Entrar</button>
     </form>
     {#if errorMessage}
       <p class="error">{errorMessage}</p>

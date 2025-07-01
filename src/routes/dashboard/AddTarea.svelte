@@ -1,10 +1,7 @@
 <script lang="ts">
   import { getFirestore, collection, addDoc } from 'firebase/firestore';
   import { getAuth } from 'firebase/auth';
-  import { app } from '../../firebase';
-
-  const db = getFirestore(app);
-  const auth = getAuth(app);
+  import { db, auth } from '../../lib/firebase';
 
   export let onTareaAgregada: () => void; // función callback
 
