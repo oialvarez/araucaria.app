@@ -2,39 +2,37 @@
 set -e
 
 # === DEPLOY SCRIPT PARA ARAUCARIA ===
-# Este script compila y despliega las Cloud Functions y el frontend web en Firebase
+# Este script instala dependencias, compila y despliega Cloud Functions y el frontend web en Firebase
 
-# 1. Selección automática de versión de Node con nvm (si existe .nvmrc)
-echo "\n[1/5] Seleccionando versión de Node para Cloud Functions..."
+# 1. Instalar dependencias de funciones
 cd functions
-if [ -f .nvmrc ]; then
-  if command -v nvm &> /dev/null; then
-    echo "Usando nvm para seleccionar versión: $(cat .nvmrc)"
-    nvm install
-    nvm use
-  else
-    echo "ADVERTENCIA: nvm no está instalado. Usa Node versión $(cat .nvmrc) para evitar problemas."
-  fi
+if [ -f .nvmrc ] && command -v nvm &> /dev/null; then
+  echo "Usando nvm para seleccionar versión: $(cat .nvmrc)"
+  nvm install
+  nvm use
 fi
-
-# Instalación de dependencias
+echo "[1/4] Instalando dependencias de Cloud Functions..."
 npm install
 cd ..
 
-# 2. Build de frontend SvelteKit
-echo "\n[2/5] Instalando dependencias y generando build del frontend..."
+# 2. Instalar dependencias y build del frontend
 cd web-app
+if [ -f .nvmrc ] && command -v nvm &> /dev/null; then
+  echo "Usando nvm para seleccionar versión: $(cat .nvmrc)"
+  nvm install
+  nvm use
+fi
+echo "[2/4] Instalando dependencias y generando build del frontend..."
 npm install
 npm run build
 cd ..
 
 # 3. Deploy de Cloud Functions
-echo "\n[3/5] Desplegando Cloud Functions..."
+echo "[3/4] Desplegando Cloud Functions..."
 firebase deploy --only functions
 
 # 4. Deploy de Hosting (web)
-echo "\n[4/5] Desplegando Hosting (web)..."
+echo "[4/4] Desplegando Hosting (web)..."
 firebase deploy --only hosting
 
-# 5. Mensaje final
-echo "\n[5/5] ¡Deploy completado con éxito! 🚀"
+echo "\n¡Deploy completado con éxito! 🚀"

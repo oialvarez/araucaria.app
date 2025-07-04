@@ -21,6 +21,11 @@ Este documento explica cómo desplegar tanto las Cloud Functions como el fronten
    - Deploy de Cloud Functions
    - Deploy de Hosting (web)
 
+**Notas:**
+- Ya no hay paso de predeploy ni build en functions (solo JS plano).
+- Si ves warnings de versiones de Node o dependencias, puedes ignorarlos si el deploy es exitoso.
+- Usa `nvm` para evitar problemas de versiones distintas de Node en cada carpeta.
+
 ---
 
 ## Deploy manual (pasos separados)
