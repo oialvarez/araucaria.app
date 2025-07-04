@@ -14,7 +14,7 @@
 		"deploy": "firebase deploy"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-auto": "^2.0.2",
+		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/adapter-static": "^2.0.1",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.1.0",
