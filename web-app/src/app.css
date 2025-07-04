@@ -1,0 +1,496 @@
+/* ==========================
+   CSS Reset Básico
+   Elimina márgenes y padding predeterminados de todos los elementos
+   ========================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ==========================
+   Estilos Globales para html y body
+   ========================== */
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+html {
+  font-family: sans-serif;
+  font-size: 16px;
+  background-color: #f0f2f5;
+  color: #333333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #f0f2f5;
+  color: #333333;
+  min-height: 100vh;
+  min-width: 100vw;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* ==========================
+   Estilos para el Header
+   ========================== */
+header {
+  width: 100%;
+  background-color: #ffffff; /* Fondo claro */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04); /* Sombra sutil */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  height: 8vh;
+}
+
+/* ==========================
+   Estilos para el Footer
+   ========================== */
+footer {
+  width: 100%;
+  background-color: #e4e6eb; /* Fondo grisáceo más oscuro que el header */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  font-size: 1rem;
+  color: #555;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  height: 8vh;
+}
+
+/* ==========================
+   Estilos para la Página de Inicio
+   ========================== */
+
+/* Contenedor principal con fondo degradado y centrado total */
+.home-page {
+  min-height: 84vh;
+  min-width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(135deg, #ffd6ec 0%, #e0c3fc 100%);
+  overflow: hidden;
+}
+
+/* Contenedor para círculos decorativos */
+.page-decoration {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Círculo rosa decorativo */
+.pink-circle {
+  position: absolute;
+  top: -60px;
+  left: -60px;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, #ffb6d5 60%, #ffd6ec 100%);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+/* Círculo morado decorativo */
+.purple-circle {
+  position: absolute;
+  bottom: -80px;
+  right: -80px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, #b39ddb 60%, #e0c3fc 100%);
+  border-radius: 50%;
+  opacity: 0.4;
+}
+
+/* Contenedor del contenido principal, centrado y con espaciado generoso */
+.page-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  min-width: 320px;    /* Para móviles pequeños */
+  max-width: 1344px;    /* Para desktop, ajusta según tu gusto */
+  height: 100%;
+  min-height: 400px;   /* o el valor que prefieras */
+  max-height: 840px;    /* para que nunca sea más alto que la ventana */
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,0.85);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 24px rgba(180, 157, 219, 0.08);
+}
+
+/* Contenido de bienvenida, centrado y espacioso */
+.welcome-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Título principal */
+.welcome-title {
+  font-family: var(--font-family, sans-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color, #a259c4);
+  margin-bottom: 0.5rem;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+/* Subtítulo */
+.welcome-subtitle {
+  font-family: var(--font-family, sans-serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--secondary-color, #555);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+/* Contenedor para los botones de acción */
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  justify-content: center;
+  margin-top: 1.5rem; /* Espacio arriba, separa los botones del último input */
+  margin-bottom: 1rem;
+}
+.action-buttons > * {
+  flex: 1 1 0;
+  min-width: 160px;
+  max-width: 220px;
+}
+
+/* Botón de inicio de sesión */
+.login-button {
+  padding: 0 2rem;
+  background: var(--primary-color, #a259c4);
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+  box-shadow: 0 2px 8px rgba(162,89,196,0.08);
+  min-height: 48px;
+  height: 48px;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-button:hover {
+  background: #8e44ad;
+}
+
+/* Botón de registro */
+.register-button {
+  padding: 0 2rem;
+  background: #fff;
+  color: var(--primary-color, #a259c4);
+  border: 2px solid var(--primary-color, #a259c4);
+  border-radius: 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  min-height: 48px;
+  height: 48px;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.register-button:hover {
+  background: var(--primary-color, #a259c4);
+  color: #fff;
+}
+
+/* Contenedor para la descripción */
+.page-description {
+  margin-top: 1.25rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Texto de la descripción */
+.description-text {
+  font-family: var(--font-family, sans-serif);
+  font-size: 1rem;
+  color: var(--secondary-color, #555);
+  text-align: center;
+  line-height: 1.6;
+  max-width: 340px;
+}
+
+/* Nombre de la plataforma */
+.platform-name {
+  font-weight: 700;
+  color: var(--primary-color, #a259c4);
+  letter-spacing: 0.5px;
+}
+
+/* ==========================
+   Estilos para AvisoCard y avisos
+   ========================== */
+.aviso-card {
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 4px 24px rgba(180, 157, 219, 0.10);
+  overflow: hidden;
+  margin-bottom: 2rem;
+  transition: box-shadow 0.18s;
+}
+.aviso-card:hover {
+  box-shadow: 0 8px 32px rgba(162, 89, 196, 0.16);
+}
+.aviso-content {
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.aviso-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+.aviso-header-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.aviso-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-color, #a259c4);
+  margin-bottom: 0.2rem;
+}
+.aviso-date {
+  font-size: 0.95rem;
+  color: #888;
+}
+.aviso-desc {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+.aviso-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.aviso-badge {
+  display: inline-block;
+  padding: 0.3rem 0.9rem;
+  border-radius: 1rem;
+  font-size: 0.98rem;
+  font-weight: 500;
+  background: #f0f2f5;
+  color: #555;
+  transition: background 0.18s, color 0.18s;
+  text-decoration: none;
+}
+.aviso-badge-evento {
+  background: #ffe9b6;
+  color: #b68a00;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.aviso-badge-file {
+  background: #e9e9ff;
+  color: #564fc4;
+  font-size: 0.93rem;
+}
+.aviso-badge-file:hover {
+  background: #d7d7ff;
+}
+.aviso-badge-curso {
+  background: #d7f9e9;
+  color: #179c5a;
+  font-size: 0.93rem;
+}
+.aviso-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+.aviso-button {
+  padding: 0 2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  outline: none;
+  min-height: 48px;
+  height: 48px;
+  line-height: 1.2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.aviso-button-leido {
+  background: #b5e7b7;
+  color: #2e7d32;
+}
+.aviso-button-leido:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+.aviso-button-marcar {
+  background: var(--primary-color, #a259c4);
+  color: #fff;
+}
+.aviso-button-marcar:hover {
+  background: #8e44ad;
+}
+
+/* ==========================
+   Estilos para formularios de avisos
+   ========================== */
+.aviso-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+.aviso-form-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b4c8b;
+  margin-bottom: 0.4rem;
+}
+.aviso-form-input {
+  padding: 0.75rem 1.2rem;
+  border: 1.5px solid #e0c3fc;
+  border-radius: 1.2rem;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  background: #faf8fc;
+  color: #4b306a;
+  transition: border 0.16s, box-shadow 0.16s;
+  box-shadow: 0 2px 8px rgba(162,89,196,0.04);
+  width: 100%;
+  min-height: 48px;
+  max-height: 9.6em; /* 5 líneas aprox */
+  resize: none;
+}
+.aviso-form-input:focus {
+  border-color: var(--primary-color, #a259c4);
+  background: #fff;
+}
+.aviso-form-input[type="text"],
+.aviso-form-input[type="email"],
+.aviso-form-input[type="password"] {
+  height: 48px;
+}
+.aviso-form-input textarea,
+textarea.aviso-form-input {
+  min-height: 48px;
+  max-height: 9.6em;
+  resize: none;
+  line-height: 1.6;
+  width: 100%;
+  font-family: inherit;
+  font-size: 1rem;
+  padding: 0.75rem 1.2rem;
+  border-radius: 1.2rem;
+  border: 1.5px solid #e0c3fc;
+  background: #faf8fc;
+  color: #4b306a;
+  box-shadow: 0 2px 8px rgba(162,89,196,0.04);
+}
+.aviso-remove-badge {
+  margin-left: 0.5rem;
+  background: none;
+  border: none;
+  color: #e74c3c;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.15s;
+  vertical-align: middle;
+}
+.aviso-remove-badge:hover {
+  color: #c0392b;
+}
+
+/* ==========================
+   Estilos para UserMenu
+   ========================== */
+.user-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #6b4c8b;
+  background: #f8f6fa;
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  outline: none;
+}
+.user-menu-btn:hover, .user-menu-btn:focus {
+  background: #e0c3fc;
+  color: #a259c4;
+}
+.user-menu-dropdown {
+  position: absolute;
+  right: 0;
+  margin-top: 0.5rem;
+  width: 12rem;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(180, 157, 219, 0.10);
+  padding: 0.5rem 0;
+  z-index: 50;
+}
+.user-menu-item {
+  width: 100%;
+  text-align: left;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: #6b4c8b;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  border-radius: 1rem;
+}
+.user-menu-item:hover, .user-menu-item:focus {
+  background: #f0f2f5;
+  color: #a259c4;
+}

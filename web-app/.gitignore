@@ -1,0 +1,3 @@
+# Firebase config (no subir nunca)
+src/lib/config.ts
+web-app/src/lib/config.ts
