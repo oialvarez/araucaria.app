@@ -1,9 +1,6 @@
-<svelte:head>
-  <link rel="stylesheet" href="/src/app.css">
-</svelte:head>
-
 <!-- Layout principal de todas las rutas -->
 <script lang="ts">
+  import '../app.css';
   import { onMount } from 'svelte';
   import { getAuth, onAuthStateChanged } from 'firebase/auth';
   import app from '$lib/firebase';
