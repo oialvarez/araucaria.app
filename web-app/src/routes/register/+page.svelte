@@ -29,6 +29,8 @@
   }
 </script>
 
+
+
 <!-- La estructura del formulario con estilos -->
 <div class="home-page">
   <div class="page-container">

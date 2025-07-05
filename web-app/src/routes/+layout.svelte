@@ -6,81 +6,74 @@
   import app from '$lib/firebase';
   import { goto } from '$app/navigation';
   import { user } from '$lib/stores/user';
-  import UserMenu from '$lib/components/UserMenu.svelte';
+  import Sidebar from '$lib/components/Sidebar.svelte';
+  import { getFirestore, doc, getDoc } from 'firebase/firestore';
   import { page } from '$app/stores';
 
-  let auth: ReturnType<typeof getAuth>;
-  let currentUser: any = null;
-  let isInitialized = false;
+  let role: string | null = null;
 
-  // Inicializar Firebase y Auth
-  onMount(async () => {
-    try {
-      // Esperar a que Firebase esté completamente inicializado
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      auth = getAuth(app);
-      isInitialized = true;
+  // Obtiene el rol real del usuario desde Firestore
+  $: if ($user) {
+    (async () => {
+      const db = getFirestore();
+      try {
+        const userDoc = await getDoc(doc(db, 'users', $user.uid));
+        role = userDoc.exists() ? userDoc.data().rol : null;
+      } catch (e) {
+        role = null;
+      }
+    })();
+  } else {
+    role = null;
+  }
 
-      // Detectar cambios en la autenticación
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          currentUser = user;
-          // Redirigir al dashboard si está autenticado, excepto si está en la página de inicio
-          if ($page.url.pathname === '/login' || $page.url.pathname === '/register') {
-            goto('/dashboard');
-          }
-        } else {
-          currentUser = null;
-          // Redirigir a la ruta raíz si no está autenticado
-          if ($page.url.pathname !== '/' && $page.url.pathname !== '/login' && $page.url.pathname !== '/register') {
-            goto('/');
-          }
-        }
-      });
-    } catch (error) {
-      console.error('Error al inicializar Firebase:', error);
-    }
-  });
-
-  // Redirigir a la página de inicio si no hay sesión
-  $: {
-    if (isInitialized) {
-      const userData = $user;
-      if (!userData.uid && !userData.loading) {
+  onMount(() => {
+    const auth = getAuth(app);
+    onAuthStateChanged(auth, (firebaseUser: any) => {
+      user.set(firebaseUser);
+      if (firebaseUser) {
+        goto('/dashboard');
+      } else {
         goto('/');
       }
-    }
-  }
+    });
+  });
 </script>
 
-{#if isInitialized}
-  <div class="app-layout">
-    <header class="header">
-      <div class="header-container">
-        <div class="header-logo">
-          <h1 class="header-title">Araucaria App</h1>
-        </div>
-        {#if currentUser}
-          <div class="header-user">
-            <UserMenu />
+  <div class="app-layout-flex">
+    <Sidebar user={$user} {role} />
+    <div class="app-main-area">
+      <header class="header">
+        <div class="header-container">
+          <div class="header-logo">
+            <h1 class="header-title">Araucaria App</h1>
           </div>
-        {/if}
-      </div>
-    </header>
 
-    <main class="main-content">
-      <div class="content-container">
-        <slot />
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-content">
-          <p class="footer-text">&copy; {new Date().getFullYear()} Araucaria App. Todos los derechos reservados.</p>
         </div>
-      </div>
-    </footer>
+      </header>
+      <main class="main-content">
+        <div class="content-container">
+          <slot />
+        </div>
+      </main>
+      <footer class="footer">
+        <div class="footer-container">
+          <div class="footer-content">
+            <p class="footer-text">&copy; {new Date().getFullYear()} Araucaria App. Todos los derechos reservados.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
   </div>
-{/if}
 
+<style>
+.app-layout-flex {
+  display: flex;
+  min-height: 100vh;
+}
+.app-main-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+</style>

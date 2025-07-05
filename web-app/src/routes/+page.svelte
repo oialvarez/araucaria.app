@@ -23,6 +23,8 @@
   }
 </script>
 
+
+
 <div class="home-page">
   {#if $page.url.pathname === '/'}
     <!-- Decoración visual -->

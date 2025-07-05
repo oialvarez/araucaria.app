@@ -77,11 +77,12 @@ footer {
   min-height: 84vh;
   min-width: 100vw;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   position: relative;
   background: linear-gradient(135deg, #ffd6ec 0%, #e0c3fc 100%);
   overflow: hidden;
+  padding-top: 8vh;
 }
 
 /* Contenedor para círculos decorativos */

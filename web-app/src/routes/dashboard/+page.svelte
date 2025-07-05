@@ -44,12 +44,13 @@
   $: tareasNoCompletadas = tareas.filter(t => !t.completed);
 </script>
 
+
+
 <div class="home-page">
   <div class="page-container">
-    <AddTarea onTareaAgregada={loadTareas} />
-
-
     <h1>Dashboard - Tareas pendientes</h1>
+
+    <AddTarea onTareaAgregada={loadTareas} />
 
     {#if tareasNoCompletadas.length > 0}
       <ul>
