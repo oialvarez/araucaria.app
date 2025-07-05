@@ -1,4 +1,5 @@
 import * as functions from 'firebase-functions';
+
 import * as admin from 'firebase-admin';
 import * as nodemailer from 'nodemailer';
 import { v4 as uuidv4 } from 'uuid';
@@ -9,7 +10,7 @@ const db = admin.firestore();
 const auth = admin.auth();
 
 // 1. Crear usuario
-export const createUser = functions.https.onCall(async (data, context) => {
+export const createUser = functions.https.onCall(async (data: any, context: any) => {
   try {
     // Verificar que el usuario es administrador
     if (context.auth?.token.rol !== 'administrador') {
@@ -44,7 +45,7 @@ export const createUser = functions.https.onCall(async (data, context) => {
 });
 
 // 2. Actualizar usuario
-export const updateUser = functions.https.onCall(async (data, context) => {
+export const updateUser = functions.https.onCall(async (data: any, context: any) => {
   try {
     const userId = context.auth?.uid;
     if (!userId) {
@@ -86,7 +87,7 @@ export const updateUser = functions.https.onCall(async (data, context) => {
 });
 
 // 3. Eliminar usuario
-export const deleteUser = functions.https.onCall(async (data, context) => {
+export const deleteUser = functions.https.onCall(async (data: any, context: any) => {
   try {
     const userId = context.auth?.uid;
     if (!userId || context.auth?.token.rol !== 'administrador') {
@@ -107,7 +108,7 @@ export const deleteUser = functions.https.onCall(async (data, context) => {
 });
 
 // 4. Crear colegio
-export const createColegio = functions.https.onCall(async (data, context) => {
+export const createColegio = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (context.auth?.token.rol !== 'administrador') {
       throw new functions.https.HttpsError('permission-denied', 'Solo los administradores pueden crear colegios');
@@ -131,7 +132,7 @@ export const createColegio = functions.https.onCall(async (data, context) => {
 });
 
 // 5. Actualizar colegio
-export const updateColegio = functions.https.onCall(async (data, context) => {
+export const updateColegio = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (context.auth?.token.rol !== 'administrador') {
       throw new functions.https.HttpsError('permission-denied', 'Solo los administradores pueden actualizar colegios');
@@ -151,7 +152,7 @@ export const updateColegio = functions.https.onCall(async (data, context) => {
 });
 
 // 6. Eliminar colegio
-export const deleteColegio = functions.https.onCall(async (data, context) => {
+export const deleteColegio = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (context.auth?.token.rol !== 'administrador') {
       throw new functions.https.HttpsError('permission-denied', 'Solo los administradores pueden eliminar colegios');
@@ -168,7 +169,7 @@ export const deleteColegio = functions.https.onCall(async (data, context) => {
 });
 
 // 7. Crear curso
-export const createCurso = functions.https.onCall(async (data, context) => {
+export const createCurso = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (context.auth?.token.rol !== 'administrador') {
       throw new functions.https.HttpsError('permission-denied', 'Solo los administradores pueden crear cursos');
@@ -194,7 +195,7 @@ export const createCurso = functions.https.onCall(async (data, context) => {
 });
 
 // 8. Actualizar curso
-export const updateCurso = functions.https.onCall(async (data, context) => {
+export const updateCurso = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (context.auth?.token.rol !== 'administrador') {
       throw new functions.https.HttpsError('permission-denied', 'Solo los administradores pueden actualizar cursos');
@@ -214,7 +215,7 @@ export const updateCurso = functions.https.onCall(async (data, context) => {
 });
 
 // 9. Eliminar curso
-export const deleteCurso = functions.https.onCall(async (data, context) => {
+export const deleteCurso = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (context.auth?.token.rol !== 'administrador') {
       throw new functions.https.HttpsError('permission-denied', 'Solo los administradores pueden eliminar cursos');
@@ -231,7 +232,7 @@ export const deleteCurso = functions.https.onCall(async (data, context) => {
 });
 
 // 10. Crear alumno
-export const createAlumno = functions.https.onCall(async (data, context) => {
+export const createAlumno = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (context.auth?.token.rol !== 'administrador') {
       throw new functions.https.HttpsError('permission-denied', 'Solo los administradores pueden crear alumnos');
@@ -262,7 +263,7 @@ export const createAlumno = functions.https.onCall(async (data, context) => {
 });
 
 // 11. Actualizar alumno
-export const updateAlumno = functions.https.onCall(async (data, context) => {
+export const updateAlumno = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (context.auth?.token.rol !== 'administrador') {
       throw new functions.https.HttpsError('permission-denied', 'Solo los administradores pueden actualizar alumnos');
@@ -282,7 +283,7 @@ export const updateAlumno = functions.https.onCall(async (data, context) => {
 });
 
 // 12. Eliminar alumno
-export const deleteAlumno = functions.https.onCall(async (data, context) => {
+export const deleteAlumno = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (context.auth?.token.rol !== 'administrador') {
       throw new functions.https.HttpsError('permission-denied', 'Solo los administradores pueden eliminar alumnos');
@@ -305,7 +306,7 @@ export const deleteAlumno = functions.https.onCall(async (data, context) => {
 });
 
 // 13. Crear aviso
-export const createAviso = functions.https.onCall(async (data, context) => {
+export const createAviso = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (!context.auth?.uid) {
       throw new functions.https.HttpsError('unauthenticated', 'Usuario no autenticado');
@@ -337,7 +338,7 @@ export const createAviso = functions.https.onCall(async (data, context) => {
 });
 
 // 14. Actualizar aviso
-export const updateAviso = functions.https.onCall(async (data, context) => {
+export const updateAviso = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (!context.auth?.uid) {
       throw new functions.https.HttpsError('unauthenticated', 'Usuario no autenticado');
@@ -351,7 +352,9 @@ export const updateAviso = functions.https.onCall(async (data, context) => {
     }
 
     const avisoData = avisoDoc.data();
-    const isAdmin = context.auth.token.rol === 'administrador';
+    if (!avisoData) {
+      throw new functions.https.HttpsError('not-found', 'Aviso no encontrado');
+    }    const isAdmin = context.auth.token.rol === 'administrador';
     const isCreator = context.auth.uid === avisoData.profesorId || context.auth.uid === avisoData.administradorId;
 
     if (!isAdmin && !isCreator) {
@@ -371,7 +374,7 @@ export const updateAviso = functions.https.onCall(async (data, context) => {
 });
 
 // 15. Eliminar aviso
-export const deleteAviso = functions.https.onCall(async (data, context) => {
+export const deleteAviso = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (!context.auth?.uid) {
       throw new functions.https.HttpsError('unauthenticated', 'Usuario no autenticado');
@@ -385,6 +388,9 @@ export const deleteAviso = functions.https.onCall(async (data, context) => {
     }
 
     const avisoData = avisoDoc.data();
+    if (!avisoData) {
+      throw new functions.https.HttpsError('not-found', 'Aviso no encontrado');
+    }
     const isAdmin = context.auth.token.rol === 'administrador';
     const isCreator = context.auth.uid === avisoData.profesorId || context.auth.uid === avisoData.administradorId;
 
@@ -402,7 +408,7 @@ export const deleteAviso = functions.https.onCall(async (data, context) => {
 });
 
 // 16. Marcar aviso como leído
-export const markAvisoAsRead = functions.https.onCall(async (data, context) => {
+export const markAvisoAsRead = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (!context.auth?.uid) {
       throw new functions.https.HttpsError('unauthenticated', 'Usuario no autenticado');
@@ -432,7 +438,10 @@ export const markAvisoAsRead = functions.https.onCall(async (data, context) => {
     }
 
     const alumnoData = alumnoDocs.docs[0].data();
-    const aplicaAlCurso = !avisoData.cursos?.length || avisoData.cursos?.includes(alumnoData.cursoId);
+    if (!avisoData) {
+  throw new functions.https.HttpsError('not-found', 'Aviso no encontrado');
+}
+const aplicaAlCurso = !avisoData.cursos?.length || avisoData.cursos?.includes(alumnoData.cursoId);
 
     if (!aplicaAlCurso) {
       throw new functions.https.HttpsError('permission-denied', 'Este aviso no se aplica a tus cursos');
@@ -453,7 +462,7 @@ export const markAvisoAsRead = functions.https.onCall(async (data, context) => {
 });
 
 // 17. Enviar correo de contacto
-export const sendContactEmail = functions.https.onCall(async (data, context) => {
+export const sendContactEmail = functions.https.onCall(async (data: any, context: any) => {
   try {
     if (!context.auth?.uid) {
       throw new functions.https.HttpsError('unauthenticated', 'Usuario no autenticado');
